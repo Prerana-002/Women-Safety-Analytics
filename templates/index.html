@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Safety Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #007bff;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px #ccc;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            display: inline-block;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .map {
+            height: 400px;
+            margin-top: 20px;
+        }
+        canvas {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Safety Analytics</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Women Safety Analytics</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Report Form -->
+    <section class="container mt-4">
+        <h2 class="text-center">Report Unsafe Location</h2>
+        <form action="/report" method="POST" class="p-3 border rounded shadow">
+            <div class="mb-3">
+                <label for="location" class="form-label">Location Name:</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Submit</button>
+        </form>
+    </section>
+
+    <!-- Map Section -->
+    <section class="container mt-4">
+        <h2 class="text-center">Safety Zones Map</h2>
+        <div id="map" style="height: 400px;" class="border rounded shadow"></div>
+    </section>
+
+    <!-- Safety Analytics Chart -->
+    <section class="container mt-4">
+        <h2 class="text-center">Safety Analytics</h2>
+        <canvas id="safetyChart"></canvas>
+    </section>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 20.5937, lng: 78.9629 }, // India
+                zoom: 5
+            });
+
+            {% for report in reports %}
+                var marker = new google.maps.Marker({
+                    position: { lat: {{ report.lat }}, lng: {{ report.lng }} },
+                    map: map,
+                    title: "{{ report.location }}"
+                });
+            {% endfor %}
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+
+
